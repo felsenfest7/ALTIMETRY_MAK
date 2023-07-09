@@ -18,36 +18,41 @@ import functions_xt as fxt
 import plot_functions as pf
 #-----------------------------------------------------------------------------------------------------------------------
 #Datanın konumu ve okunması
-data = "/home/furkan/deus/ALTIMETRY_2/DATA/XTRACK_DATA/BSEA/ctoh.sla.ref.TP+J1+J2+J3.bsea.109.nc"
-dataset = fxt.read_xt(data, 40.9005, 34.25539255, 0.20)
+data = "/home/furkan/deus/ALTIMETRY_2/DATA/XTRACK_SAR_DATA/MEDSEA/ctoh.sla.ref.S3A.medsea.625.nc"
+dataset = fxt.read_bozuk_xt(data, 36.5637203, 1, "ERDEMLİ", "sar")
+
+#Bozuk veriden elle çıkarmaların yapılması
+dff = pd.read_excel("/home/furkan/deus/ALTIMETRY_2/SONUÇLAR/ERDEMLİ/erdemli_sar_bozuk.xlsx", index_col = 0)
+dff["Zaman"] = pd.to_datetime(dff["Zaman"])
+dff.rename(columns = {"Zaman" : "cdate_t"}, inplace = True)
 
 #Ardından kıyıya uzak ve yakın iki XTRACK altimetri ölçme noktasının belirlenmesi
-dataset1 = dataset[dataset["points_numbers"] == 9]     #kıyıya uzak olan
-dataset2 = dataset[dataset["points_numbers"] == 10]    #kıyıya yakın olan
+dataset1 = dff[dff["points_numbers"] == 46]     #kıyıya uzak olan
+dataset2 = dff[dff["points_numbers"] == 47]     #kıyıya yakın olan
 
 #Kıyıya uzak olan ölçme noktasına ait işlemler
 dataset1.reset_index(drop=True, inplace = True)     #bir tane veriseti 0 harcinde sayı ile başlıyor ve sorun veriyor, bunu çözmek için bunu kullandım
 dataset1_gunluk = fxt.iqr_gunluk_xt(dataset1)
 dataset1_aylık = fxt.iqr_aylik_xt(dataset1_gunluk[1])   #1'in anlamı filtered olan df
-dataset1_pre_ekksa = fxt.pre_ekksa(dataset1_aylık[1], "2004-07-01", "2019-07-01")
+dataset1_pre_ekksa = fxt.pre_ekksa(dataset1_aylık[1], "2003-05-01", "2023-12-01")
 dataset1_ekksa = haa.harmonik_analiz(dataset1_pre_ekksa)
 df1, df2, df3, df4, df5 = dataset1_gunluk[0], dataset1_gunluk[1], dataset1_aylık[0], dataset1_aylık[1], dataset1_ekksa[1]
-dataset1_grafikler = pf.plot_digerleri_xt(df1, df2, df3, df4, "Marmara Ereğlisi (Uzak)", "LRM")
-dataset1_ekksa_grafik = pf.plot_ekksa_xt(df5, "Marmara Ereğlisi (Uzak)", dataset1_ekksa[2], dataset1_ekksa[3], 2018, 5, 1, 37.345, "LRM")
+dataset1_grafikler = pf.plot_digerleri_xt(df1, df2, df3, df4, "Erdemli (Uzak)", "SAR")
+dataset1_ekksa_grafik = pf.plot_ekksa_xt(df5, "Erdemli (Uzak)", dataset1_ekksa[2], dataset1_ekksa[3], 2022, 7, 1, 23.95, "SAR")
 
 #Kıyıya yakın olan ölçme noktasına ait işlemler
 dataset2.reset_index(drop=True, inplace = True)     #bir tane veriseti 0 harcinde sayı ile başlıyor ve sorun veriyor, bunu çözmek için bunu kullandım
 dataset2_gunluk = fxt.iqr_gunluk_xt(dataset2)
 dataset2_aylık = fxt.iqr_aylik_xt(dataset2_gunluk[1])   #1'in anlamı filtered olan df
-dataset2_pre_ekksa = fxt.pre_ekksa(dataset2_aylık[1], "2004-07-01", "2019-07-01")
+dataset2_pre_ekksa = fxt.pre_ekksa(dataset2_aylık[1], "2003-05-01", "2023-12-01")
 dataset2_ekksa = haa.harmonik_analiz(dataset2_pre_ekksa)
 df6, df7, df8, df9, df10 = dataset2_gunluk[0], dataset2_gunluk[1], dataset2_aylık[0], dataset2_aylık[1], dataset2_ekksa[1]
-dataset2_grafikler = pf.plot_digerleri_xt(df6, df7, df8, df9, "Marmara Ereğlisi (Yakın)", "LRM")
-dataset2_ekksa_grafik = pf.plot_ekksa_xt(df10, "Marmara Ereğlisi (Yakın)", dataset2_ekksa[2], dataset2_ekksa[3], 2017, 6, 1, 37.57, "LRM")
+dataset2_grafikler = pf.plot_digerleri_xt(df6, df7, df8, df9, "Erdemli (Yakın)", "SAR")
+dataset2_ekksa_grafik = pf.plot_ekksa_xt(df10, "Erdemli (Yakın)", dataset2_ekksa[2], dataset2_ekksa[3], 2022, 7, 1, 24.28, "SAR")
 
 #Mesafeler ve koordinatlar
-dataset1_distance = fxt.mesafe_hesapla(40.96896672, 27.96215236, dataset1.lat.mean(), dataset1.lon.mean())
-dataset2_distance = fxt.mesafe_hesapla(40.96896672, 27.96215236, dataset2.lat.mean(), dataset2.lon.mean())
+dataset1_distance = fxt.mesafe_hesapla(36.56372892, 34.25538719, dataset1.lat.mean(), dataset1.lon.mean())
+dataset2_distance = fxt.mesafe_hesapla(36.56372892, 34.25538719, dataset2.lat.mean(), dataset2.lon.mean())
 
 print(dataset1_ekksa[0], dataset2_ekksa[0])
 

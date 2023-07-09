@@ -22,7 +22,7 @@ from dateutil.relativedelta import relativedelta
 import math as m
 import geopy.distance
 #-----------------------------------------------------------------------------------------------------------------------
-def plot_digerleri_xt(df1, df2, df3, df4, title):
+def plot_digerleri_xt(df1, df2, df3, df4, title, mode):
     """
         --> XTRACK verilerine ait verilerin grafikleri çizdirildi.
         --> df1: günlük ham veriler ve detrend değerleri buradan alınacak
@@ -128,14 +128,14 @@ def plot_digerleri_xt(df1, df2, df3, df4, title):
     ax7.grid()
     ax8.grid()
 
-    fig.suptitle(f"{title} XTRACK Grafikleri", fontsize=15)
+    fig.suptitle(f"{title} XTRACK {mode} SSH Model Grafikleri", fontsize=15)
     fig.supxlabel("Tarih (Yıl)", fontsize=15)
     fig.supylabel("Deniz Seviyesi Yükseklikleri (m)", fontsize=15)
     plt.subplots_adjust(hspace = 0.5)
     plt.tight_layout()
     plt.show()
 #-----------------------------------------------------------------------------------------------------------------------
-def plot_ekksa_xt(df, title, mss, trend, year, month, day, h):
+def plot_ekksa_xt(df, title, mss, trend, year, month, day, h, mode):
     """
         --> Dengelenmiş SSH değerlerinin çizdirilmesi için.
         --> Year, month, day ve h değerleri plota trend değerleri yazdırılırken yazdırılacağı yeri belirtir.
@@ -165,7 +165,7 @@ def plot_ekksa_xt(df, title, mss, trend, year, month, day, h):
     ax.legend(loc="upper left")
     plt.xticks(rotation=45)
     plt.grid(True)
-    plt.title(f"{title} XTRACK SSH Grafiği")
+    plt.title(f"{title} XTRACK {mode} SSH Modeli")
     plt.show()
 
 
