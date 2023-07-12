@@ -29,21 +29,21 @@ dataset2 = dataset[dataset["points_numbers"] == 104]     #kıyıya uzak olan
 dataset1.reset_index(drop=True, inplace = True)     #bir tane veriseti 0 harcinde sayı ile başlıyor ve sorun veriyor, bunu çözmek için bunu kullandım
 dataset1_gunluk = fxt.iqr_gunluk_xt(dataset1)
 dataset1_aylık = fxt.iqr_aylik_xt(dataset1_gunluk[1])   #1'in anlamı filtered olan df
-dataset1_pre_ekksa = fxt.pre_ekksa(dataset1_aylık[1], "1999-04-01", "2019-11-01")
+dataset1_pre_ekksa = fxt.pre_ekksa(dataset1_aylık[1], "1999-04-01", "2023-11-01")
 dataset1_ekksa = haa.harmonik_analiz(dataset1_pre_ekksa)
 df1, df2, df3, df4, df5 = dataset1_gunluk[0], dataset1_gunluk[1], dataset1_aylık[0], dataset1_aylık[1], dataset1_ekksa[1]
 dataset1_grafikler = pf.plot_digerleri_xt(df1, df2, df3, df4, "Menteş (Yakın)", "LRM")
-dataset1_ekksa_grafik = pf.plot_ekksa_xt(df5, "Menteş (Yakın)", dataset1_ekksa[2], dataset1_ekksa[3], 2018, 5, 1, 38.96, "LRM")
+dataset1_ekksa_grafik = pf.plot_ekksa_xt(df5, "Menteş (Yakın)", dataset1_ekksa[2], dataset1_ekksa[3], 2020, 5, 1, 38.96, "LRM")
 
 #Kıyıya uzak olan ölçme noktasına ait işlemler
 dataset2.reset_index(drop=True, inplace = True)     #bir tane veriseti 0 harcinde sayı ile başlıyor ve sorun veriyor, bunu çözmek için bunu kullandım
 dataset2_gunluk = fxt.iqr_gunluk_xt(dataset2)
 dataset2_aylık = fxt.iqr_aylik_xt(dataset2_gunluk[1])   #1'in anlamı filtered olan df
-dataset2_pre_ekksa = fxt.pre_ekksa(dataset2_aylık[1], "1999-04-01", "2019-11-01")
+dataset2_pre_ekksa = fxt.pre_ekksa(dataset2_aylık[1], "1999-04-01", "2023-11-01")
 dataset2_ekksa = haa.harmonik_analiz(dataset2_pre_ekksa)
 df6, df7, df8, df9, df10 = dataset2_gunluk[0], dataset2_gunluk[1], dataset2_aylık[0], dataset2_aylık[1], dataset2_ekksa[1]
 dataset2_grafikler = pf.plot_digerleri_xt(df6, df7, df8, df9, "Menteş (Uzak)", "LRM")
-dataset2_ekksa_grafik = pf.plot_ekksa_xt(df10, "Menteş (Uzak)", dataset2_ekksa[2], dataset2_ekksa[3], 2018, 5, 1, 38.82, "LRM")
+dataset2_ekksa_grafik = pf.plot_ekksa_xt(df10, "Menteş (Uzak)", dataset2_ekksa[2], dataset2_ekksa[3], 2020, 5, 1, 38.82, "LRM")
 
 #Mesafeler ve koordinatlar
 dataset1_distance = fxt.mesafe_hesapla(38.42960155, 26.72214568, dataset1.lat.mean(), dataset1.lon.mean())
