@@ -167,15 +167,181 @@ def plot_ekksa_xt(df, title, mss, trend, year, month, day, h, mode):
     plt.grid(True)
     plt.title(f"{title} XTRACK {mode} SSH Modeli")
     plt.show()
+#-----------------------------------------------------------------------------------------------------------------------
+def plot_digerleri_tudes(df1, df2, df3, df4, df5, df6, df7, df8, title):
+    """
+        --> TUDES verilerine ait verilerin grafikleri çizdirildi.
+        --> df1: 15 dk ham veriler ve detrend değerleri buradan alınacak
+            df2: IQR sonrası 15 dk ham veriler buradan alınacak
+            df3: saatlik ham veriler ve detrend değerleri buradan alınacak
+            df4: IQR sonrası saatlik ham veriler buradan alınacak
+            df5: günlük ham veriler ve detrend değerleri buradan alınacak
+            df6: IQR sonrası günlük ham veriler buradan alınacak
+            df7: aylık ham veriler ve detrend değerleri buradan alınacak
+            df8: IQR sonrası aylık ham veriler buradan alınacak
+    """
+    # df çizdirilirken sorun verdiği için dff diye yeni bir dataframe e kopyalanır
+    dff1, dff2, dff3, dff4, dff5, dff6, dff7, dff8 = df1, df2, df3, df4, df5, df6, df7, df8
 
+    # Nan değerlerinin alınmaması
+    dff1 = dff1[dff1["ssh"].notna()]
+    dff1 = dff1[dff1["detrended_15lik"].notna()]
 
+    dff2 = dff2[dff2["ssh"].notna()]
 
+    dff3 = dff3[dff3["ssh"].notna()]
+    dff3 = dff3[dff3["detrended_saatlik"].notna()]
 
+    dff4 = dff4[dff4["ssh"].notna()]
 
+    dff5 = dff5[dff5["ssh"].notna()]
+    dff5 = dff5[dff5["detrended_gunluk"].notna()]
 
+    dff6 = dff6[dff6["ssh"].notna()]
 
+    dff7 = dff7[dff7["ssh"].notna()]
+    dff7 = dff7[dff7["detrended_aylik"].notna()]
 
+    dff8 = dff8[dff8["ssh"].notna()]
 
+    # Plotların çizdirilmesi
+    fig, ax = plt.subplots(4, 3, figsize=(12, 10))
 
+    ax[0, 0].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[0, 1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[0, 2].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[1, 0].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[1, 1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[1, 2].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[2, 0].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[2, 1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[2, 2].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[3, 0].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[3, 1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax[3, 2].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
+    ax[0, 0].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[0, 1].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[0, 2].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[1, 0].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[1, 1].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[1, 2].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[2, 0].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[2, 1].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[2, 2].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[3, 0].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[3, 1].xaxis.set_major_locator(MonthLocator(interval=24))
+    ax[3, 2].xaxis.set_major_locator(MonthLocator(interval=24))
 
+    ax[0, 0].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[0, 1].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[0, 2].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[1, 0].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[1, 1].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[1, 2].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[2, 0].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[2, 1].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[2, 2].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[3, 0].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[3, 1].fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax[3, 2].fmt_xdata = DateFormatter('% Y-% m-% d')
+
+    #Plotların çizdirilmesi
+    ax[0, 0].plot_date(dff1["cdate_t"], dff1["ssh"], "#24b7db", label="SL")
+    ax[0, 1].plot_date(dff1["cdate_t"], dff1["detrended_15lik"], "#FA5F55", label="Detrended")
+    ax[0, 2].plot_date(dff2["cdate_t"], dff2["ssh"], "#0d88e6", label="SL")
+
+    ax[1, 0].plot_date(dff3["cdate_t"], dff3["ssh"], "#24b7db", label="SL")
+    ax[1, 1].plot_date(dff3["cdate_t"], dff3["detrended_saatlik"], "#FA5F55", label="Detrended")
+    ax[1, 2].plot_date(dff4["cdate_t"], dff4["ssh"], "#0d88e6", label="SL")
+
+    ax[2, 0].plot_date(dff5["cdate_t"], dff5["ssh"], "#24b7db", label="SL")
+    ax[2, 1].plot_date(dff5["cdate_t"], dff5["detrended_gunluk"], "#FA5F55", label="Detrended")
+    ax[2, 2].plot_date(dff6["cdate_t"], dff6["ssh"], "#0d88e6", label="SL")
+
+    ax[3, 0].plot_date(dff7["cdate_t"], dff7["ssh"], "#24b7db", label="SL")
+    ax[3, 1].plot_date(dff7["cdate_t"], dff7["detrended_aylik"], "#FA5F55", label="Detrended")
+    ax[3, 2].plot_date(dff8["cdate_t"], dff8["ssh"], "#0d88e6", label="SL")
+
+    #Başlıklar
+    ax[0, 0].set_title("15 Dakikalık Mareograf İstasyonu Verileri", fontsize=12)
+    ax[0, 1].set_title("15 Dakikalık Mareograf İstasyonu Verilerinin Detrendleri", fontsize=12)
+    ax[0, 2].set_title("IQR Sonrası 15 Dakikalık Mareograf İstasyonu Verileri", fontsize=12)
+
+    ax[1, 0].set_title("Saatlik Mareograf İstasyonu Verileri", fontsize=12)
+    ax[1, 1].set_title("Saatlik Mareograf İstasyonu Verilerinin Detrendleri", fontsize=12)
+    ax[1, 2].set_title("IQR Sonrası Saatlik Mareograf İstasyonu Verileri", fontsize=12)
+
+    ax[2, 0].set_title("Günlük Mareograf İstasyonu Verileri", fontsize=12)
+    ax[2, 1].set_title("Günlük Mareograf İstasyonu Verilerinin Detrendleri", fontsize=12)
+    ax[2, 2].set_title("IQR Sonrası Günlük Mareograf İstasyonu Verileri", fontsize=12)
+
+    ax[3, 0].set_title("Aylık Mareograf İstasyonu Verileri", fontsize=12)
+    ax[3, 1].set_title("Aylık Mareograf İstasyonu Verilerinin Detrendleri", fontsize=12)
+    ax[3, 2].set_title("IQR Sonrası Aylık Mareograf İstasyonu Verileri", fontsize=12)
+
+    ax[0, 0].legend(loc="upper right")
+    ax[0, 1].legend(loc="upper right")
+    ax[0, 2].legend(loc="upper right")
+    ax[1, 0].legend(loc="upper right")
+    ax[1, 1].legend(loc="upper right")
+    ax[1, 2].legend(loc="upper right")
+    ax[2, 0].legend(loc="upper right")
+    ax[2, 1].legend(loc="upper right")
+    ax[2, 2].legend(loc="upper right")
+    ax[3, 0].legend(loc="upper right")
+    ax[3, 1].legend(loc="upper right")
+    ax[3, 2].legend(loc="upper right")
+
+    ax[0, 0].grid()
+    ax[0, 1].grid()
+    ax[0, 2].grid()
+    ax[1, 0].grid()
+    ax[1, 1].grid()
+    ax[1, 2].grid()
+    ax[2, 0].grid()
+    ax[2, 1].grid()
+    ax[2, 2].grid()
+    ax[3, 0].grid()
+    ax[3, 1].grid()
+    ax[3, 2].grid()
+
+    fig.suptitle(f"{title} Mareograf İstasyonu SL Model Grafikleri", fontsize=15)
+    fig.supxlabel("Tarih (Yıl)", fontsize=15)
+    fig.supylabel("Deniz Seviyesi Yükseklikleri (m)", fontsize=15)
+    plt.subplots_adjust(hspace=0.5)
+    plt.tight_layout()
+    plt.show()
+# -----------------------------------------------------------------------------------------------------------------------
+def plot_ekksa_tudes(df, title, mss, trend, year, month, day, h):
+    """
+        --> Dengelenmiş SSH değerlerinin çizdirilmesi için.
+        --> Year, month, day ve h değerleri plota trend değerleri yazdırılırken yazdırılacağı yeri belirtir.
+    """
+    # df çizdirilirken sorun verdiği için dff diye yeni bir dataframe e kopyalanır
+    dff = df
+
+    # Nan değerlerinin alınmaması
+    dff = dff[dff["SSH_ilk"].notna()]
+    dff = dff[dff["SSH_model"].notna()]
+
+    # Plotun çizdirilmesi
+    fig, ax = plt.subplots()
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.plot_date(dff["cdate_t"], dff["SSH_ilk"], "#FFBF00", label="SL Ölçü")
+    ax.plot_date(dff["cdate_t"], dff["SSH_model"], "#0d88e6", label="SL Model")
+
+    ax.axhline(y = mss, c = "red", label = "MSL")
+    plt.text(datetime.date(year, month, day), h, trend, fontsize=10)
+
+    # Year-Month bilgileri için MonthLocator kullanılmalı
+    ax.xaxis.set_major_locator(MonthLocator(interval=12))
+    # Burada ise verinin veri tipinin formatı girilmeli
+    ax.fmt_xdata = DateFormatter('% Y-% m-% d')
+    ax.set_xlabel("Tarih (Yıl-Ay)", fontsize=13)
+    ax.set_ylabel("Ortalama Aylık Deniz Seviyesi Yüksekliği (m)", fontsize=13)
+    ax.legend(loc="upper left")
+    plt.xticks(rotation=45)
+    plt.grid(True)
+    plt.title(f"{title} Mareograf İstasyonu SL Modeli")
+    plt.show()
